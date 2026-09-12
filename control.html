@@ -1,1 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Awards Control</title>
 
+  <style>
+    body{
+      font-family:sans-serif;
+      text-align:center;
+      padding-top:100px;
+    }
+
+    button{
+      font-size:32px;
+      padding:20px 40px;
+      margin:20px;
+      cursor:pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>Awards Ceremony Control</h1>
+
+<button onclick="sendCommand('play')">▶ PLAY</button>
+
+<button onclick="sendCommand('pause')">⏸ PAUSE</button>
+
+<button onclick="sendCommand('restart')">⏮ RESTART</button>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+import {
+  getFirestore,
+  doc,
+  updateDoc
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDMcwU2zz04FXc_en20wzdSpnL-Z5hmBIw",
+  authDomain: "awards-ceremony-73c6b.firebaseapp.com",
+  projectId: "awards-ceremony-73c6b",
+  storageBucket: "awards-ceremony-73c6b.firebasestorage.app",
+  messagingSenderId: "973575550624",
+  appId: "1:973575550624:web:c3336371acd87b8464bbc5"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.sendCommand = async function(command){
+
+  await updateDoc(
+    doc(db, "control", "commands"),
+    {
+      action: command
+    }
+  );
+
+};
+
+</script>
+
+</body>
+</html>
