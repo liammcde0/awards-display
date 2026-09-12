@@ -1,9 +1,81 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Awards Display</title>
+  <title>Awards Player</title>
+
+  <style>
+    body{
+      margin:0;
+      background:black;
+      overflow:hidden;
+    }
+
+    video{
+      width:100vw;
+      height:100vh;
+      object-fit:contain;
+    }
+  </style>
 </head>
+
 <body>
-    Hello World
+
+<video id="video">
+  <source src="awards.mp4" type="video/mp4">
+</video>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+import {
+  getFirestore,
+  doc,
+  onSnapshot
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDMcwU2zz04FXc_en20wzdSpnL-Z5hmBIw",
+  authDomain: "awards-ceremony-73c6b.firebaseapp.com",
+  projectId: "awards-ceremony-73c6b",
+  storageBucket: "awards-ceremony-73c6b.firebasestorage.app",
+  messagingSenderId: "973575550624",
+  appId: "1:973575550624:web:c3336371acd87b8464bbc5"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const video = document.getElementById("video");
+
+video.pause();
+
+onSnapshot(
+  doc(db, "control", "commands"),
+  (snapshot) => {
+
+    const data = snapshot.data();
+
+    if(!data) return;
+
+    switch(data.action){
+
+      case "play":
+        video.play();
+        break;
+
+      case "pause":
+        video.pause();
+        break;
+
+      case "restart":
+        video.pause();
+        video.currentTime = 0;
+        break;
+    }
+  }
+);
+
+</script>
+
 </body>
 </html>
