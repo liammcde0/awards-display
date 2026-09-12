@@ -18,11 +18,9 @@
   </style>
 </head>
 
-<body>
+<body style="margin:0;background:black;color:white;font-family:sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;">
 
-<video id="video">
-  <source src="Captains_Intro.mov" type="video/mov">
-</video>
+<h1 id="status">READY</h1>
 
 <script type="module">
 
@@ -45,9 +43,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const video = document.getElementById("video");
-
-video.pause();
+const status = document.getElementById("status");
 
 onSnapshot(
   doc(db, "control", "commands"),
@@ -57,21 +53,8 @@ onSnapshot(
 
     if(!data) return;
 
-    switch(data.action){
+    status.textContent = data.action.toUpperCase();
 
-      case "play":
-        video.play();
-        break;
-
-      case "pause":
-        video.pause();
-        break;
-
-      case "restart":
-        video.pause();
-        video.currentTime = 0;
-        break;
-    }
   }
 );
 
